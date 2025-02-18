@@ -15,9 +15,9 @@ import ar.edu.unju.edm.trabajofinalfebreropv.service.IViajeService;
 
 import org.springframework.web.bind.annotation.PostMapping;
 
-@Controller
+@Controller // anotacion que indica que la clase es un controlador
 public class ViajeController {
-  @Autowired
+  @Autowired // anotacion que permite inyectar dependencias
   IViajeService viajeService;
   @Autowired
   IConductorService conductorService;
@@ -34,7 +34,6 @@ public class ViajeController {
   @PostMapping("/viajes/precio")
   public String postVerificarViaje(@ModelAttribute Viaje viaje, RedirectAttributes redirectAttributes) {
     try {
-      System.out.println(viaje.getConductor().getApellido());
       Integer precio = 0;
       if (viaje.getTipo().toString() == "Corta") {
         precio = 7000;
