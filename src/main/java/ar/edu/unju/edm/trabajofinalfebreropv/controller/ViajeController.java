@@ -32,43 +32,40 @@ public class ViajeController {
   }
 
   @PostMapping("/viajes/precio")
-  public ModelAndView postVerificarViaje(@ModelAttribute Viaje viaje, RedirectAttributes redirectAttributes) {
-    ModelAndView modelView = new ModelAndView("ConfirmarViaje");
-    modelView.addObject("viaje", viaje);
-    Integer precio = 0;
-    if (viaje.getTipo().toString() == "Corta") {
-      precio = 7000;
-    } else {
-      if (viaje.getTipo().toString() == "Media") {
-        precio = 10000;
+  public String postVerificarViaje(@ModelAttribute Viaje viaje, RedirectAttributes redirectAttributes) {
+    try {
+      System.out.println(viaje.getConductor().getApellido());
+      Integer precio = 0;
+      if (viaje.getTipo().toString() == "Corta") {
+        precio = 7000;
       } else {
-        precio = 20000;
+        if (viaje.getTipo().toString() == "Media") {
+          precio = 10000;
+        } else {
+          precio = 20000;
+        }
       }
-    }
-    if (viaje.getConductor().getTipoAutomovil().toString() == "Luxe") {
-      precio = precio + (precio * 10 / 100);
-    } else {
-      if (viaje.getConductor().getTipoAutomovil().toString() == "Premium") {
-        precio = precio + (precio * 20 / 100);
+      if (viaje.getConductor().getTipoAutomovil().toString() == "Luxe") {
+        precio = precio + (precio * 10 / 100);
+      } else {
+        if (viaje.getConductor().getTipoAutomovil().toString() == "Premium") {
+          precio = precio + (precio * 20 / 100);
+        }
       }
-    }
-    modelView.addObject("precio", precio);
-    return modelView;
-  }
+      List<Viaje> viajes = viajeService.listarViajes();
+      for (Viaje v : viajes) {
+        if (v.getConductor().getId() == viaje.getConductor().getId() && v.getEstado().equals(true)) {
+          throw new RuntimeException("El conductor ya tiene un viaje asignado");
+        }
+      }
+      viaje.setCosto(precio);
+      viajeService.guardarViaje(viaje);
+      return "redirect:/viajes";
+    } catch (RuntimeException e) {
+      redirectAttributes.addFlashAttribute("mensajeError", e.getMessage());
 
-  @PostMapping("/viajes/guardar")
-  public String postGuardarViaje(@ModelAttribute Viaje viaje) {
-    if (viaje.getTipo().toString() == "Corta") {
-      viaje.setCosto(7000);
-    } else {
-      if (viaje.getTipo().toString() == "Media") {
-        viaje.setCosto(10000);
-      } else {
-        viaje.setCosto(20000);
-      }
+      return "redirect:/nuevoViaje";
     }
-    viajeService.guardarViaje(viaje);
-    return "redirect:/viajes";
   }
 
   @GetMapping("/viajes")

@@ -52,4 +52,9 @@ public class IViajeServiceImp implements IViajeService {
     return listaViajesActivos;
   }
 
+  @Override
+  public List<Viaje> listarViajes() {
+    return (List<Viaje>) viajeRepository.findAll();
+  }
+
 }
