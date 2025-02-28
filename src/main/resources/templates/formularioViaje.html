@@ -13,92 +13,60 @@
     <div th:if="${mensajeError}" class="alert alert-danger" role="alert">
       <span th:text="${mensajeError}"></span>
     </div>
-    <h2>Crear Viaje</h2>
-    <form th:action="@{/viajes/precio}" th:object="${viaje}" method="post" class="mt-4">
-      <input type="hidden" th:field="*{id}">
-      <div class="mb-3">
-        <label for="tipo" class="form-label">Tipo de Viaje</label>
-        <select id="tipo" class="form-select" th:field="*{tipo}" required>
-          <option th:each="tipo : ${tipos}" th:value="${tipo}" th:text="${tipo}">
-          </option>
-        </select>
-      </div>
-      <input type="hidden" th:field="*{costo}">
+    <h2 class="text-center">Crear Viaje</h2>
 
-      <input type="hidden" th:field="*{estado}">
-      <div class="mb-3">
-        <label for="conductor" class="form-label">Conductores</label>
-        <select id="conductor" class="form-select" th:field="*{conductor}" required>
-          <option th:each="conductor : ${conductores}" th:value="${conductor.id}"
-            th:text="${conductor.id + ' - ' +conductor.nombre + ' ' + conductor.apellido}">
-          </option>
-        </select>
-      </div>
-      <div class="container my-4">
-        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
-          <div th:each="conductor : ${conductores}" class="col">
-            <div class="card shadow-lg rounded-3" style="width: 100%;">
-              <div class="card-header bg-primary text-white text-center">
-                <h5 class="mb-0">Información del Conductor N° <span th:text="${conductor.id}"></span></h5>
-              </div>
-              <div class="card-body">
-                <p class="card-text"><strong>Nombre:</strong> <span th:text="${conductor.nombre}"></span></p>
-                <p class="card-text"><strong>Apellido:</strong> <span th:text="${conductor.apellido}"></span></p>
-                <p class="card-text"><strong>Tipo de Automóvil:</strong> <span
-                    th:text="${conductor.tipoAutomovil}"></span></p>
+    <hr>
+    
 
-                <hr>
+	<div class="container my-4">
+	  <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+	    <div th:each="conductor : ${conductores}" class="col">
+	      <div class="card shadow-lg rounded-3" style="width: 100%;">
+	        <div class="card-header bg-primary text-white text-center">
+	          <h5 class="mb-0">Información del Conductor N° <span th:text="${conductor.id}"></span></h5>
+	        </div>
+	        <div class="card-body">
+	          <p class="card-text"><strong>Nombre:</strong> <span th:text="${conductor.nombre}"></span></p>
+	          <p class="card-text"><strong>Apellido:</strong> <span th:text="${conductor.apellido}"></span></p>
+	          <p class="card-text"><strong>Tipo de Automóvil:</strong> <span th:text="${conductor.tipoAutomovil}"></span></p>
 
-                <h6 class="text-primary">Tarifas del Viaje</h6>
-                <ul class="list-group list-group-flush">
-                  <li th:if="${conductor.tipoAutomovil.toString() == 'X'}" class="list-group-item"><strong>Corta
-                      distancia:</strong>
-                    <span>$7000</span>
-                  </li>
-                  <li th:if="${conductor.tipoAutomovil.toString() == 'Luxe'}" class="list-group-item"><strong>Corta
-                      distancia:</strong>
-                    <span th:text="'$'+${7000 +7000*0.1}"></span>
-                  </li>
-                  <li th:if="${conductor.tipoAutomovil.toString() == 'Premium'}" class="list-group-item"><strong>Corta
-                      distancia:</strong>
-                    <span th:text="'$'+${7000 +7000*0.2}"></span>
-                  </li>
-                  <li th:if="${conductor.tipoAutomovil.toString() == 'X'}" class="list-group-item"><strong>Media
-                      distancia:</strong> <span>$10000</span>
-                  </li>
-                  <li th:if="${conductor.tipoAutomovil.toString() == 'Luxe'}" class="list-group-item"><strong>Media
-                      distancia:</strong>
-                    <span th:text="'$'+${10000 +10000*0.1}"></span>
-                  </li>
-                  <li th:if="${conductor.tipoAutomovil.toString() == 'Premium'}" class="list-group-item"><strong>Media
-                      distancia:</strong>
-                    <span th:text="'$'+${10000 +10000*0.2}"></span>
-                  </li>
-                  <li th:if="${conductor.tipoAutomovil.toString() == 'X'}" class="list-group-item"><strong>Larga
-                      distancia:</strong> <span>$20000</span>
-                  </li>
-                  <li th:if="${conductor.tipoAutomovil.toString() == 'Luxe'}" class="list-group-item"><strong>Larga
-                      distancia:</strong>
-                    <span th:text="'$'+${20000 +20000*0.1}"></span>
-                  </li>
-                  <li th:if="${conductor.tipoAutomovil.toString() == 'Premium'}" class="list-group-item"><strong>Larga
-                      distancia:</strong>
-                    <span th:text="'$'+${20000 +20000*0.2}"></span>
-                  </li>
-                </ul>
+	          <hr>
+
+	          <h6 class="text-primary">Tarifas del Viaje</h6>
+	          <ul class="list-group list-group-flush">
+	            <li th:if="${conductor.tipoAutomovil.toString() == 'X'}" class="list-group-item"><strong>Corta distancia:</strong> <span>$7000</span></li>
+	            <li th:if="${conductor.tipoAutomovil.toString() == 'Luxe'}" class="list-group-item"><strong>Corta distancia:</strong> <span th:text="'$'+${7000 + 7000 * 0.1}"></span></li>
+	            <li th:if="${conductor.tipoAutomovil.toString() == 'Premium'}" class="list-group-item"><strong>Corta distancia:</strong> <span th:text="'$'+${7000 + 7000 * 0.2}"></span></li>
+	            <li th:if="${conductor.tipoAutomovil.toString() == 'X'}" class="list-group-item"><strong>Media distancia:</strong> <span>$10000</span></li>
+	            <li th:if="${conductor.tipoAutomovil.toString() == 'Luxe'}" class="list-group-item"><strong>Media distancia:</strong> <span th:text="'$'+${10000 + 10000 * 0.1}"></span></li>
+	            <li th:if="${conductor.tipoAutomovil.toString() == 'Premium'}" class="list-group-item"><strong>Media distancia:</strong> <span th:text="'$'+${10000 + 10000 * 0.2}"></span></li>
+	            <li th:if="${conductor.tipoAutomovil.toString() == 'X'}" class="list-group-item"><strong>Larga distancia:</strong> <span>$20000</span></li>
+	            <li th:if="${conductor.tipoAutomovil.toString() == 'Luxe'}" class="list-group-item"><strong>Larga distancia:</strong> <span th:text="'$'+${20000 + 20000 * 0.1}"></span></li>
+	            <li th:if="${conductor.tipoAutomovil.toString() == 'Premium'}" class="list-group-item"><strong>Larga distancia:</strong> <span th:text="'$'+${20000 + 20000 * 0.2}"></span></li>
+	          </ul>
+
+	          <div class="text-center mt-3">
+	      
+				<form th:action="@{/viajes/precio}" method="post">
+				    <input type="hidden" name="conductorId" th:value="${conductor.id}" />
+				    
+				    <label for="tipo">Tipo de Viaje</label>
+				    <select id="tipo" name="tipo" class="form-select" required>
+				        <option value="" disabled selected>Seleccionar tipo de viaje</option>
+				        <option th:each="tipo : ${tipos}" th:value="${tipo}" th:text="${tipo}"></option>
+				    </select>
+
+				    <button type="submit" class="btn btn-primary mt-3">Hacer Viaje</button>
+				</form>
+	          </div>
+	        </div>
+	      </div>
+	    </div>
+	  </div>
+	</div>
 
 
 
-              </div>
-            </div>
-
-          </div>
-        </div>
-
-      </div>
-      <button type="submit" class="btn btn-primary">Hacer Viaje</button>
-    </form>
-  </div>
 </body>
 
 </html>

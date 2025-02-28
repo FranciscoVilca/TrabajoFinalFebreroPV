@@ -8,16 +8,20 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import ar.edu.unju.edm.trabajofinalfebreropv.model.Conductor;
 
 import ar.edu.unju.edm.trabajofinalfebreropv.model.Viaje;
+import ar.edu.unju.edm.trabajofinalfebreropv.model.Viaje.Tipo;
+import ar.edu.unju.edm.trabajofinalfebreropv.model.ViajeDTO;
 import ar.edu.unju.edm.trabajofinalfebreropv.service.IConductorService;
 import ar.edu.unju.edm.trabajofinalfebreropv.service.IViajeService;
 
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
-@Controller // anotacion que indica que la clase es un controlador
+@Controller
 public class ViajeController {
-  @Autowired // anotacion que permite inyectar dependencias
+  @Autowired
   IViajeService viajeService;
   @Autowired
   IConductorService conductorService;
@@ -32,8 +36,12 @@ public class ViajeController {
   }
 
   @PostMapping("/viajes/precio")
-  public String postVerificarViaje(@ModelAttribute Viaje viaje, RedirectAttributes redirectAttributes) {
+  public String postVerificarViaje(@RequestParam("conductorId") Long conductorId,@RequestParam("tipo") String tipo, @ModelAttribute Viaje viaje, RedirectAttributes redirectAttributes) {
     try {
+
+      viaje.setConductor(conductorService.buscarConductor(conductorId));
+      viaje.setTipo(Tipo.valueOf(tipo));
+      
       Integer precio = 0;
       if (viaje.getTipo().toString() == "Corta") {
         precio = 7000;
@@ -51,31 +59,33 @@ public class ViajeController {
           precio = precio + (precio * 20 / 100);
         }
       }
-      List<Viaje> viajes = viajeService.listarViajes();
-      for (Viaje v : viajes) {
-        if (v.getConductor().getId() == viaje.getConductor().getId() && v.getEstado().equals(true)) {
-          throw new RuntimeException("El conductor ya tiene un viaje asignado");
-        }
-      }
+  
       viaje.setCosto(precio);
+      viaje.getConductor().setEstado(false);
       viajeService.guardarViaje(viaje);
+
+      
       return "redirect:/viajes";
     } catch (RuntimeException e) {
       redirectAttributes.addFlashAttribute("mensajeError", e.getMessage());
 
       return "redirect:/nuevoViaje";
+      
     }
   }
 
   @GetMapping("/viajes")
   public ModelAndView getListaViajes() {
     ModelAndView modelView = new ModelAndView("listadoViajes");
-    modelView.addObject("viajes", viajeService.listarViajesActivos());
+    List<ViajeDTO> viajesDTO = viajeService.listarViajesActivosDTO();
+    modelView.addObject("viajes", viajesDTO); 
     return modelView;
   }
-
+  
   @GetMapping("/viajes/eliminar/{id}")
   public String eliminarViaje(@ModelAttribute Viaje viaje) {
+	viaje =  viajeService.buscarViaje(viaje.getId());
+	viaje.getConductor().setEstado(true);
     viajeService.eliminarViaje(viaje.getId());
     return "redirect:/viajes";
   }

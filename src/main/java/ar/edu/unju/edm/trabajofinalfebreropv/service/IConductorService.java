@@ -8,7 +8,7 @@ public interface IConductorService {
   public void guardarConductor(Conductor conductor);
 
   public List<Conductor> listarConductoresActivos();
-
+  public List<Conductor> listarConductoresInactivos();
   public void eliminarConductor(Long id);
 
   public Conductor modificarConductor(Conductor conductor);

@@ -8,38 +8,61 @@
 </head>
 
 <body>
+
+  
   <div th:insert="~{/layouts/nav :: nav}"></div>
-  <div class="container mt-5">
-    <h2>Lista de Conductores</h2>
-    <a href="/nuevoConductor" class="btn btn-primary">Nuevo Conductor</a>
-    <table class="table table-striped mt-3">
-      <thead>
-        <tr>
-          <th>ID</th>
-          <th>Nombre</th>
-          <th>Apellido</th>
-          <th>Edad</th>
-          <th>Automóvil</th>
-          <th>Tipo de Automóvil</th>
-          <th>Botones</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr th:each="conductor : ${conductores}">
-          <td th:text="${conductor.id}"></td>
-          <td th:text="${conductor.nombre}"></td>
-          <td th:text="${conductor.apellido}"></td>
-          <td th:text="${#temporals.year(#temporals.createNow()) - conductor.fechaNacimiento.getYear()}"></td>
-          <td th:text="${conductor.automovil}"></td>
-          <td th:text="${conductor.tipoAutomovil}"></td>
-          <td>
-            <a th:href="@{/conductores/editar/{id}(id=${conductor.id})}" class="btn btn-warning btn-sm">Editar</a>
-            <a th:href="@{/conductores/eliminar/{id}(id=${conductor.id})}" class="btn btn-danger btn-sm">Eliminar</a>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
+   <div class="container mt-5">
+     <h2 class="text-center">Lista de Conductores</h2>
+	 
+     <a href="/nuevoConductor" class="btn btn-primary mb-3">Nuevo Conductor</a>
+	 
+	 <h2>Conductores Activos</h2>
+	 
+     <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+       <div th:each="conductor : ${conductoresActivos}" class="col">
+         <div class="card shadow-lg rounded-3">
+           <div class="card-header text-white bg-primary text-center">
+             <h5 class="mb-0">Conductor N° <span th:text="${conductor.id}"></span></h5>
+           </div>
+           <div class="card-body">
+             <h5 class="card-title"><span th:text="${conductor.nombre}"></span> <span th:text="${conductor.apellido}"></span></h5>
+             <p class="card-text"><strong>Edad:</strong> <span th:text="${#temporals.year(#temporals.createNow()) - conductor.fechaNacimiento.getYear()}"></span> años</p>
+             <p class="card-text"><strong>Automóvil:</strong> <span th:text="${conductor.automovil}"></span></p>
+             <p class="card-text"><strong>Tipo de Automóvil:</strong> <span th:text="${conductor.tipoAutomovil}"></span></p>
+           </div>
+           <div class="card-footer text-center">
+             <a th:href="@{/conductores/editar/{id}(id=${conductor.id})}" class="btn btn-warning btn-sm">Editar</a>
+             <a th:href="@{/conductores/eliminar/{id}(id=${conductor.id})}" class="btn btn-danger btn-sm">Eliminar</a>
+           </div>
+         </div>
+       </div>
+     </div>
+	 
+	 <h2>Conductores Inactivos</h2>
+	 
+	 <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+	       <div th:each="conductor : ${conductoresInactivos}" class="col">
+	         <div class="card shadow-lg rounded-3">
+	           <div class="card-header text-white bg-primary text-center">
+	             <h5 class="mb-0">Conductor N° <span th:text="${conductor.id}"></span></h5>
+	           </div>
+	           <div class="card-body">
+	             <h5 class="card-title"><span th:text="${conductor.nombre}"></span> <span th:text="${conductor.apellido}"></span></h5>
+	             <p class="card-text"><strong>Edad:</strong> <span th:text="${#temporals.year(#temporals.createNow()) - conductor.fechaNacimiento.getYear()}"></span> años</p>
+	             <p class="card-text"><strong>Automóvil:</strong> <span th:text="${conductor.automovil}"></span></p>
+	             <p class="card-text"><strong>Tipo de Automóvil:</strong> <span th:text="${conductor.tipoAutomovil}"></span></p>
+	           </div>
+	           <div class="card-footer text-center">
+	             <a th:href="@{/conductores/editar/{id}(id=${conductor.id})}" class="btn btn-warning btn-sm">Editar</a>
+	           </div>
+	         </div>
+	       </div>
+	     </div>
+	  
+	
+   </div>
+ 
+  
 </body>
 
 </html>

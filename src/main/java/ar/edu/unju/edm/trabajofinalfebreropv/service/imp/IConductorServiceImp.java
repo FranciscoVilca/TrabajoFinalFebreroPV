@@ -33,6 +33,20 @@ public class IConductorServiceImp implements IConductorService {
   }
 
   @Override
+  public List<Conductor> listarConductoresInactivos() {
+	    List<Conductor> listaConductores = (List<Conductor>) conductorRepository.findAll();
+	    List<Conductor> listaConductoresInactivos = new ArrayList<>();
+	    for (Conductor conductor : listaConductores) {
+	      if (conductor.getEstado() == false ) {
+	        listaConductoresInactivos.add(conductor);
+	      }
+	    }
+	    return listaConductoresInactivos;
+	  }
+  
+  
+  
+  @Override
   public void eliminarConductor(Long id) {
     Conductor conductorEliminado = buscarConductor(id);
     conductorEliminado.setEstado(false);

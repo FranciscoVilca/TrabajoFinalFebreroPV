@@ -27,12 +27,8 @@
           <td th:text="${viaje.id}"></td>
           <td th:text="${viaje.tipo}"></td>
           <td th:text="'$'+${viaje.costo}"></td>
-		  <td th:text="${viaje.nombreApellidoConductor}"></td> <!---
-		  
-		  <td th:text="${viaje.conductor.nombre + ' ' + viaje.conductor.apellido}"></td>  cambio de linea--->
-		  
+          <td th:text="${viaje.conductor.nombre + ' ' + viaje.conductor.apellido}"></td>
           <td>
-            <!---<a th:href="@{/viajes/editar/{id}(id=${viaje.id})}" class="btn btn-warning btn-sm">Editar</a>--->
             <a th:href="@{/viajes/eliminar/{id}(id=${viaje.id})}" class="btn btn-danger btn-sm">Eliminar</a>
           </td>
         </tr>

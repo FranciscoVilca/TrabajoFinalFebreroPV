@@ -8,13 +8,20 @@ import org.springframework.stereotype.Service;
 
 import ar.edu.unju.edm.trabajofinalfebreropv.Repository.ViajeRepository;
 import ar.edu.unju.edm.trabajofinalfebreropv.model.Viaje;
+import ar.edu.unju.edm.trabajofinalfebreropv.model.ViajeDTO;
 import ar.edu.unju.edm.trabajofinalfebreropv.service.IViajeService;
+import ar.edu.unju.edm.trabajofinalfebreropv.service.ViajeDtoMapper;
+
+
 
 @Service
 public class IViajeServiceImp implements IViajeService {
   @Autowired
   ViajeRepository viajeRepository;
-
+  
+  @Autowired
+  ViajeDtoMapper viajeMapper;
+  
   @Override
   public void guardarViaje(Viaje viaje) {
     viaje.setEstado(true);
@@ -51,7 +58,16 @@ public class IViajeServiceImp implements IViajeService {
     }
     return listaViajesActivos;
   }
-
+  
+//AGERGADO 
+  
+ @Override
+  public List<ViajeDTO> listarViajesActivosDTO() {
+      List<Viaje> viajes = listarViajesActivos();  
+      return viajeMapper.viajesToViajeDTOs(viajes);  
+  } 
+  
+  
   @Override
   public List<Viaje> listarViajes() {
     return (List<Viaje>) viajeRepository.findAll();

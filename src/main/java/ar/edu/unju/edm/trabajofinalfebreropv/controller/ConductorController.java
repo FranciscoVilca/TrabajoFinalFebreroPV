@@ -35,7 +35,7 @@ public class ConductorController {
   @PostMapping("/conductores/guardar")
   public String postGuardarConductor(Conductor conductor, RedirectAttributes redirectAttributes) {
     try {
-      if (LocalDate.now().getYear() - conductor.getFechaNacimiento().getYear() < 18) {
+      if (LocalDate.now().getYear() - conductor.getFechaNacimiento().getYear()  < 18) {
         throw new RuntimeException("El conductor no puede ser menor de edad");
       }
       conductorService.guardarConductor(conductor);
@@ -50,7 +50,8 @@ public class ConductorController {
   @GetMapping("/conductores")
   public ModelAndView getListaConductores() {
     ModelAndView modelView = new ModelAndView("listadoConductores");
-    modelView.addObject("conductores", conductorService.listarConductoresActivos());
+    modelView.addObject("conductoresActivos", conductorService.listarConductoresActivos());
+    modelView.addObject("conductoresInactivos", conductorService.listarConductoresInactivos());
     return modelView;
   }
 
@@ -62,7 +63,7 @@ public class ConductorController {
 
   @GetMapping("/conductores/editar/{id}")
   public ModelAndView getFormularioEditarConductor(@PathVariable(name = "id") Long id) {
-    ModelAndView modelView = new ModelAndView("formularioConductor");
+    ModelAndView modelView = new ModelAndView("formularioConductor");   
     modelView.addObject("conductor", conductorService.buscarConductor(id));
     List<String> tipos = List.of("X", "Luxe", "Premium");
     modelView.addObject("tipos", tipos);
